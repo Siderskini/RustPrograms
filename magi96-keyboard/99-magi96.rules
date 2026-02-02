@@ -1,0 +1,12 @@
+# IQUNIX Magi96 Keyboard udev rules
+# This file allows non-root access to the keyboard
+#
+# Installation:
+#   sudo cp 99-magi96.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules
+#   sudo udevadm trigger
+#
+# Then unplug and replug the keyboard
+
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="320f", ATTRS{idProduct}=="5088", MODE="0666", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="320f", ATTRS{idProduct}=="5088", MODE="0666", TAG+="uaccess"

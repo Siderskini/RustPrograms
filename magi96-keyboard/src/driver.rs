@@ -57,7 +57,15 @@ impl Magi96Driver {
         let data_len = data.len().min(REPORT_SIZE - 4);
         buf1[4..4 + data_len].copy_from_slice(&data[..data_len]);
         
-        let _ = self.device.write(&buf1);
+        let bytes_written = self.device.write(&buf1)
+            .context("Failed to write HID report")?;
+        if bytes_written != buf1.len() {
+            return Err(anyhow!(
+                "Incomplete HID write: expected {} bytes, wrote {}",
+                buf1.len(),
+                bytes_written
+            ));
+        }
 
         Ok(())
     }
